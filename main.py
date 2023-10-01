@@ -32,9 +32,5 @@ async def rearm(ctx):
     await ctx.send(f"commands reloaded")
     print("Cogs reloaded.")
 
-@client.event
-async def on_command_error(message,error):
-    if isinstance(error, commands.CommandNotFound):
-        await message.send("not yet implemented")
 
 client.run(token)
