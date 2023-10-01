@@ -50,10 +50,8 @@ class command(commands.Cog):
 
             if result:
                 await utils.update_database(f'UPDATE seegs SET bodycount = {new_count}, swordfights = {new_swordfights} WHERE user = {ctx.author.id}')
-                await ctx.send("database incremented 1")
             else:
                 await utils.update_database(f'INSERT INTO seegs (user, swordfights, bodycount) VALUES ({ctx.author.id}, {new_swordfights}, {new_count})')
-                await ctx.send("database incremented 1")
 
             if rand >= 50: #implement that check
                 await ctx.send(f"**<@{ctx.author.id}> dared {user} to a swordfight. {user} won and fucked <@{ctx.author.id}> in the ass.**")
@@ -71,7 +69,7 @@ class command(commands.Cog):
     @commands.hybrid_command()
     async def impregnate(self,ctx,*, user: str):
         try:
-            succ = [f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a boy!**",f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a ~~girl~~ abortion!**",f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a femboy!**", f"**<@{ctx.author.id}> unsuccessfully tried to impregnate {user}.**",f"**{user} became pregnant with <@{ctx.author.id}>'s child, but soon suffered a miscarriage.**",f"*<@{ctx.author.id}> tried to impregnate {user}, but was reported to the police and was arrested.**"]
+            succ = [f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a boy!**",f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a ~~girl~~ abortion!**",f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a femboy!**", f"**<@{ctx.author.id}> unsuccessfully tried to impregnate {user}.**",f"**{user} became pregnant with <@{ctx.author.id}>'s child, but soon suffered a miscarriage.**",f"**<@{ctx.author.id}> tried to impregnate {user}, but was reported to the police and was arrested.**"]
             randomizer = randint(0,5)
             succ = succ[randomizer]
             result = await utils.query_database(f'SELECT bodycount, boys, girls, femboys, unsuccessful, miscarriage FROM seegs WHERE user = {ctx.author.id}')
