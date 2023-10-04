@@ -5,7 +5,7 @@ import builtins
 MY_GUILD = discord.Object(id=996688646063271996)
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!', description="description", intents=intents)
-token = "MTA0OTY0NjkzMzI0NzAwMDU4Ng.G59O3s.i01VK3UHKQ9AIClVFFULpwhOdJt2hXxLLGYhUg"
+token = "TOKEN"
 builtins.client = client
 files = []
 nick = str
