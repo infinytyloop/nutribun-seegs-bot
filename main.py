@@ -5,7 +5,7 @@ import builtins
 MY_GUILD = discord.Object(id=996688646063271996)
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!', description="description", intents=intents)
-token = "MTA0OTY0NjkzMzI0NzAwMDU4Ng.GUigM0.7J1BiJL6s-fHe9JniNA8FdcexV44tv8FxddMoU"
+token = "MTA0OTY0NjkzMzI0NzAwMDU4Ng.G59O3s.i01VK3UHKQ9AIClVFFULpwhOdJt2hXxLLGYhUg"
 builtins.client = client
 files = []
 nick = str
@@ -33,8 +33,56 @@ async def rearm(ctx):
     print("Cogs reloaded.")
 
 @client.event
-async def on_command_error(message,error):
-    if isinstance(error, commands.CommandNotFound):
-        await message.send("not yet implemented")
+async def on_message_delete(Message):
+    global deleted
+    global author
+    global nick
+    global channel
+    global files
+    global auth
+    if Message.attachments:
+        for a in Message.attachments:
+            files.append(await a.to_file(use_cached=True))
+    deleted = Message.content
+    auth = Message.author
+    author = auth.name
+    nick = None   
+    if isinstance(auth, discord.Member):
+        nick = auth.nick if auth.nick else nick
+    channel = Message.channel
+
+@client.command()
+async def snipe(ctx):
+    global files
+    hookname = nick or author    
+    if channel != ctx.channel:
+        await ctx.send("There are no deleted messages to snipe in this channel.")
+        return
+
+    try:
+        webhook = await channel.create_webhook(name='Snipe webhook')
+
+        if files:  
+            await webhook.send(
+                deleted,
+                username=hookname,
+                avatar_url=str(auth.avatar),
+                file=files[0]  
+            )
+        else:
+            await webhook.send(
+                deleted,
+                username=hookname,
+                avatar_url=str(auth.avatar)
+            )
+        
+        await webhook.delete()
+        files = []    
+
+    except:
+        await ctx.send(f'unable to send through webhook, sniping as bot instead\n\n**{hookname} deleted message:**\n\n{deleted}')
+        if files:
+            await ctx.send(files=files)
+            files = []
 
 client.run(token)

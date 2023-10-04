@@ -71,7 +71,7 @@ class command(commands.Cog):
     @commands.hybrid_command()
     async def impregnate(self,ctx,*, user: str):
         try:
-            succ = [f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a boy!**",f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a ~~girl~~ abortion!**",f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a femboy!**", f"**<@{ctx.author.id}> unsuccessfully tried to impregnate {user}.**",f"**{user} became pregnant with <@{ctx.author.id}>'s child, but soon suffered a miscarriage.**",f"*<@{ctx.author.id}> tried to impregnate {user}, but was reported to the police and was arrested.**"]
+            succ = [f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a boy!**",f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a ~~girl~~ abortion!**",f"**{user} became pregnant with <@{ctx.author.id}>'s child! \nCongratulations, it's a femboy!**", f"**<@{ctx.author.id}> unsuccessfully tried to impregnate {user}.**",f"**{user} became pregnant with <@{ctx.author.id}>'s child, but soon suffered a miscarriage.**",f"**<@{ctx.author.id}> tried to impregnate {user}, but was reported to the police and was arrested.**"]
             randomizer = randint(0,5)
             succ = succ[randomizer]
             result = await utils.query_database(f'SELECT bodycount, boys, girls, femboys, unsuccessful, miscarriage FROM seegs WHERE user = {ctx.author.id}')
@@ -159,11 +159,15 @@ class command(commands.Cog):
             if result:
                     await utils.update_database(f'UPDATE seegs SET sniff = {new_count} WHERE user = {ctx.author.id}')
             else:
-                    await self.bot.cur.execute(f'INSERT INTO seegs (user, sniff) VALUES ({ctx.author.id}, {new_count})')
+                    await utils.update_database(f'INSERT INTO seegs (user, sniff) VALUES ({ctx.author.id}, {new_count})')
 
             await ctx.send(f"**<@{ctx.author.id}> sniffed {user}'s PE clothes!**")
         except:
             await utils.error_report(format_exc(1), ctx.channel.id)
+    
+    @commands.hybrid_command()
+    async def cbt(self, ctx, *, user: str):
+        await ctx.send(f"**{ctx.author.id} cock and ball tortured {user}!**")
             
     @commands.hybrid_command()
     async def stats(self,ctx):   
@@ -251,9 +255,9 @@ class command(commands.Cog):
         except:
             await utils.error_report(format_exc(1), ctx.channel.id)
 
-    @commands.hybrid_command()
-    async def test_error(self, ctx):
-        await utils.error_report("Test error", ctx.channel.id)
+#    @commands.hybrid_command()
+#    async def test_error(self, ctx):
+#        await utils.error_report("Test error", ctx.channel.id)
 
 async def setup(client):
     await client.add_cog(command(client))
