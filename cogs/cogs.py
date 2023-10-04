@@ -116,7 +116,7 @@ class command(commands.Cog):
                     new_unsuc = current_unsuc + 1
                     await utils.update_database(f'UPDATE seegs SET unsuccessful = {new_unsuc} WHERE user = {ctx.author.id}')
 
-                    await ctx.send(f"**{succ}**")
+                await ctx.send(f"**{succ}**")
         except:
             await utils.error_report(format_exc(1), ctx.channel.id)
 
