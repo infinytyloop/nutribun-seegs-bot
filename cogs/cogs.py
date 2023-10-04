@@ -167,7 +167,7 @@ class command(commands.Cog):
     
     @commands.hybrid_command()
     async def cbt(self, ctx, *, user: str):
-        await ctx.send(f"**{ctx.author.id} cock and ball tortured {user}!**")
+        await ctx.send(f"**<@{ctx.author.id}> cock and ball tortured {user}!**")
             
     @commands.hybrid_command()
     async def stats(self,ctx):   
