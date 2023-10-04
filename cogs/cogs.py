@@ -50,10 +50,8 @@ class command(commands.Cog):
 
             if result:
                 await utils.update_database(f'UPDATE seegs SET bodycount = {new_count}, swordfights = {new_swordfights} WHERE user = {ctx.author.id}')
-                await ctx.send("database incremented 1")
             else:
                 await utils.update_database(f'INSERT INTO seegs (user, swordfights, bodycount) VALUES ({ctx.author.id}, {new_swordfights}, {new_count})')
-                await ctx.send("database incremented 1")
 
             if rand >= 50: #implement that check
                 await ctx.send(f"**<@{ctx.author.id}> dared {user} to a swordfight. {user} won and fucked <@{ctx.author.id}> in the ass.**")
