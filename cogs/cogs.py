@@ -50,10 +50,8 @@ class command(commands.Cog):
 
             if result:
                 await utils.update_database(f'UPDATE seegs SET bodycount = {new_count}, swordfights = {new_swordfights} WHERE user = {ctx.author.id}')
-                await ctx.send("database incremented 1")
             else:
                 await utils.update_database(f'INSERT INTO seegs (user, swordfights, bodycount) VALUES ({ctx.author.id}, {new_swordfights}, {new_count})')
-                await ctx.send("database incremented 1")
 
             if rand >= 50: #implement that check
                 await ctx.send(f"**<@{ctx.author.id}> dared {user} to a swordfight. {user} won and fucked <@{ctx.author.id}> in the ass.**")
@@ -118,7 +116,7 @@ class command(commands.Cog):
                     new_unsuc = current_unsuc + 1
                     await utils.update_database(f'UPDATE seegs SET unsuccessful = {new_unsuc} WHERE user = {ctx.author.id}')
 
-                    await ctx.send(f"**{succ}**")
+                await ctx.send(f"**{succ}**")
         except:
             await utils.error_report(format_exc(1), ctx.channel.id)
 
@@ -167,7 +165,7 @@ class command(commands.Cog):
     
     @commands.hybrid_command()
     async def cbt(self, ctx, *, user: str):
-        await ctx.send(f"**{ctx.author.id} cock and ball tortured {user}!**")
+        await ctx.send(f"**<@{ctx.author.id}> cock and ball tortured {user}!**")
             
     @commands.hybrid_command()
     async def stats(self,ctx):   
