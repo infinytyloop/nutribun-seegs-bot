@@ -20,7 +20,9 @@ async def on_ready():
 
 @client.command()
 @commands.is_owner()
-async def arm(ctx):
+async def arm(ctx, cog):
+    if cog == "nnn":
+        await client.load_extension("cogs.nnn_cog")
     await client.load_extension("cogs.cogs")
     await ctx.send(f"bot is armed")
     print("Cogs loaded successfully.")
@@ -31,6 +33,13 @@ async def rearm(ctx):
     await client.reload_extension("cogs.cogs")
     await ctx.send(f"commands reloaded")
     print("Cogs reloaded.")
+
+@client.command()
+@commands.is_owner()
+async def disarm(ctx):
+    await client.unload_extension("cogs.cogs")
+    await ctx.send(f"commands unloaded")
+    print("Cogs unloaded.")
 
 @client.event
 async def on_message_delete(Message):
