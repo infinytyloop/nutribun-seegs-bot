@@ -5,7 +5,7 @@ import time
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!', description="description", intents=intents)
-token = "MTAxMzY3MzI1NjUyNTUwODYyOA.Gf9K_r.VDGk_im7LhQBj0_JVuMv9HWnYt89cVRgJ9hO1s"
+token = "removed"
 builtins.client = client
 owner = 859360668826337291
 client.block_commands = False
