@@ -1,16 +1,14 @@
 import discord
 from discord.ext import commands
 import builtins
+import time
 
-MY_GUILD = discord.Object(id=996688646063271996)
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!', description="description", intents=intents)
-token = "TOKEN"
+token = "MTAxMzY3MzI1NjUyNTUwODYyOA.Gf9K_r.VDGk_im7LhQBj0_JVuMv9HWnYt89cVRgJ9hO1s"
 builtins.client = client
-files = []
-nick = str
-author = str
-
+owner = 859360668826337291
+client.block_commands = False
 from utils import utils
 
 @client.event
@@ -18,80 +16,59 @@ async def on_ready():
     print(f"Logged in as {client.user} (ID {client.user.id})")
     await utils.init_database()
 
+#TODO: arm, disarm, rearm
 @client.command()
-@commands.is_owner()
-async def arm(ctx, cog):
-    if cog == "nnn":
-        await client.load_extension("cogs.nnn_cog")
-    await client.load_extension("cogs.cogs")
-    await ctx.send(f"bot is armed")
-    print("Cogs loaded successfully.")
+async def arm(ctx):
+    if ctx.author.id == owner:
+        await client.load_extension("cogs.cogs")
+        await ctx.send("loaded")
+    else:
+        await ctx.reply(f"You do not own this bot. <@{owner}>, crush his skull.")
 
 @client.command()
-@commands.is_owner()
 async def rearm(ctx):
-    await client.reload_extension("cogs.cogs")
-    await ctx.send(f"commands reloaded")
-    print("Cogs reloaded.")
+    if ctx.author.id == owner:
+        await client.reload_extension("cogs.cogs")
+        await ctx.send("loaded")
+    else:
+        await ctx.reply(f"You do not own this bot. <@{owner}>, crush his skull.")
 
-@client.command()
-@commands.is_owner()
-async def disarm(ctx):
-    await client.unload_extension("cogs.cogs")
-    await ctx.send(f"commands unloaded")
-    print("Cogs unloaded.")
 
 @client.event
 async def on_message_delete(Message):
-    global deleted
-    global author
-    global nick
-    global channel
-    global files
-    global auth
+    global deleted, author, nick, channel, files
+    files = []
     if Message.attachments:
         for a in Message.attachments:
+            files.clear()
             files.append(await a.to_file(use_cached=True))
     deleted = Message.content
-    auth = Message.author
-    author = auth.name
-    nick = None   
-    if isinstance(auth, discord.Member):
-        nick = auth.nick if auth.nick else nick
+    author = Message.author.name
+    nick = Message.author.nick if Message.author.nick else nick
     channel = Message.channel
+
+    t = time.strftime("%H:%M:%S %D %B %y", time.localtime())
+    print(f"Message deleted ({t}):\nAuthor: {nick or author} ({author}) in channel {channel.name}\nMessage Content: {deleted if deleted else None}\nHas Attachment?: {True if files else False}\nHas embed?: {True if Message.embeds else False}")
 
 @client.command()
 async def snipe(ctx):
-    global files
     hookname = nick or author    
     if channel != ctx.channel:
         await ctx.send("There are no deleted messages to snipe in this channel.")
         return
 
-    try:
-        webhook = await channel.create_webhook(name='Snipe webhook')
+    await ctx.send(f'**{hookname} deleted message:**\n\n{deleted}')
+    if files:
+        await ctx.send(files=files)
+    files.clear()
 
-        if files:  
-            await webhook.send(
-                deleted,
-                username=hookname,
-                avatar_url=str(auth.avatar),
-                file=files[0]  
-            )
-        else:
-            await webhook.send(
-                deleted,
-                username=hookname,
-                avatar_url=str(auth.avatar)
-            )
-        
-        await webhook.delete()
-        files = []    
-
-    except:
-        await ctx.send(f'unable to send through webhook, sniping as bot instead\n\n**{hookname} deleted message:**\n\n{deleted}')
-        if files:
-            await ctx.send(files=files)
-            files = []
+@client.event
+async def on_raw_typing(self):
+    guild = client.get_guild(996688646063271996)
+    ninoy = guild.get_member(762500367812132894)
+    if ninoy.raw_status != "offline":
+        client.block_commands = True
+    if ninoy.raw_status == "offline":
+        client.block_commands = False
 
 client.run(token)

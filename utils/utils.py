@@ -1,4 +1,6 @@
 import aiosqlite
+from discord import Embed, colour
+from random import choice
 from builtins import client
 
 errors = 0
@@ -77,3 +79,32 @@ async def error_report(e,channel):
         error_code = error_code + 1
         errors = errors + 1
         print("Error occurred, please check DMs")
+
+async def construct_statsembed(author, avatar, bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff):
+    footer_msg = []
+    with open("footer_message.txt", "rt") as f:
+        footer_msg.clear()
+        for line in f:
+            footer_msg.append(line.strip())
+        f.close() 
+
+    embed = Embed(title=f"Sex Bot Statistics for {author}", color= colour.Color.red())
+    avatar = str(avatar)
+
+    embed.set_thumbnail(url=avatar)
+    embed.add_field(name="Bodycount", value=bodycount, inline=True)
+    embed.add_field(name="Swordfights", value=swordfights, inline=True)
+    embed.add_field(name="Swordfight Wins", value=swordfight_win, inline=True)
+    embed.add_field(name="Swordfight Losses", value=swordfight_loss, inline=True)
+    embed.add_field(name="Times Gexxed", value=gex, inline=True)
+    embed.add_field(name="PE clothes sniffed", value=sniff,inline=True)
+    embed.add_field(name="\n**IMPREGNATE STATS**", value="",inline= False)
+    embed.add_field(name="Boys", value=boys, inline=True)
+    embed.add_field(name="Girls", value=girls, inline=True)
+    embed.add_field(name="Femboys", value=femboys, inline=True)
+    embed.add_field(name="Unsuccessful Attempts", value=unsuccessful, inline=True)
+    embed.add_field(name="Miscarriages", value=miscarriage, inline=True)
+
+    embed.set_footer(text=choice(footer_msg))
+
+    return embed
