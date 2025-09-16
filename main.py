@@ -2,10 +2,13 @@ import discord
 from discord.ext import commands
 import builtins
 import time
+from dotenv import load_dotenv
+import os
+load_dotenv('secrets.env')
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='!', description="description", intents=intents)
-token = "removed"
+token = os.getenv('DISCORD_KEY')
 builtins.client = client
 owner = 859360668826337291
 client.block_commands = False
@@ -18,7 +21,7 @@ async def on_ready():
 
 #TODO: arm, disarm, rearm
 @client.command()
-async def arm(ctx):
+async def arise(ctx):
     if ctx.author.id == owner:
         await client.load_extension("cogs.cogs")
         await ctx.send("loaded")
@@ -70,5 +73,7 @@ async def on_raw_typing(self):
         client.block_commands = True
     if ninoy.raw_status == "offline":
         client.block_commands = False
+
+
 
 client.run(token)
