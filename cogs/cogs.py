@@ -188,11 +188,14 @@ class command(commands.Cog):
             await utils.update_database(f'UPDATE seegs SET bodycount = {new_count} WHERE user = {ctx.author.id}')
         else:
             await utils.update_database(f'INSERT INTO seegs (user, bodycount) VALUES ({ctx.author.id}, {new_count})')
-        await ctx.send(f"**<@{ctx.author.id} gave {user.mention} a footjob!**") 
+        await ctx.send(f"**<@{ctx.author.id}> gave {user.mention} a footjob!**") 
 
     @commands.hybrid_command()
-    async def sexstats(self,ctx):     
-        result = await utils.query_database(f'SELECT bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff FROM seegs WHERE user = {ctx.author.id}')
+    async def sexstats(self,ctx, user: Member = None):
+        id = ctx.author.id if user is None else user.id
+        name = ctx.author.name if user is None else user.name
+        avatar = ctx.author.avatar if user is None else user.avatar     
+        result = await utils.query_database(f'SELECT bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff FROM seegs WHERE user = {id}')
         if result:
             bodycount = result[0]
             swordfights = result[1] if result[1] is not None else 0
@@ -207,7 +210,7 @@ class command(commands.Cog):
             sniff = result[10] if result[10] is not None else 0
         else:
             bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff = 0,0,0,0,0,0,0,0,0,0,0
-        embed = await utils.construct_statsembed(ctx.author.name, ctx.author.avatar, bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff)
+        embed = await utils.construct_statsembed(name, avatar, bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff)
         await ctx.send(embed=embed)
 
 
