@@ -134,7 +134,7 @@ class command(commands.Cog):
         else:
             await ctx.send(f"{user.mention} does not fulfill the requirements for feminization. :(")
 
-    @commands.hybrid_command()
+    @commands.hybrid_command()  
     async def rape(self, ctx, user: Member):
              await ctx.reply("https://tenor.com/view/pnp-police-raid-philippines-gif-18307264")
 
@@ -172,7 +172,7 @@ class command(commands.Cog):
             await utils.update_database(f'UPDATE seegs SET bodycount = {new_count} WHERE user = {ctx.author.id}')
         else:
             await utils.update_database(f'INSERT INTO seegs (user, bodycount) VALUES ({ctx.author.id}, {new_count})')
-        await ctx.send(f"**{user.mention} gave <@{ctx.author.id}> a blowjob!**") 
+        await ctx.send(f"**<@{ctx.author.id}> gave {user.mention} a blowjob!**") 
 
     @commands.hybrid_command()
     async def footjob(self, ctx, user: Member):
@@ -188,7 +188,7 @@ class command(commands.Cog):
             await utils.update_database(f'UPDATE seegs SET bodycount = {new_count} WHERE user = {ctx.author.id}')
         else:
             await utils.update_database(f'INSERT INTO seegs (user, bodycount) VALUES ({ctx.author.id}, {new_count})')
-        await ctx.send(f"**{user.mention} gave <@{ctx.author.id}> a footjob!**") 
+        await ctx.send(f"**<@{ctx.author.id} gave {user.mention} a footjob!**") 
 
     @commands.hybrid_command()
     async def sexstats(self,ctx):     
