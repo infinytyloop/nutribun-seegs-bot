@@ -1,13 +1,9 @@
 from utils import utils
 from discord.ext import commands
-from traceback import format_exc
 from random import randint, choice
 from discord import Embed, colour, Member
-import datetime
-list_of_retards = []
 
-
-class command(commands.Cog):
+ class command(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -147,7 +143,55 @@ class command(commands.Cog):
          await ctx.send(f"**Nagjakol si <@{ctx.author.id}>!**")  
 
     @commands.hybrid_command()
-    async def stats(self,ctx):     
+    async def gex(self, ctx, user: Member):
+        
+        print(True)
+        result = await utils.query_database(f'SELECT gex FROM seegs WHERE user = {ctx.author.id}')
+        if result:
+                current_count = result[0] if result[0] is not None else 0
+        else:
+                current_count = 0
+        new_count = current_count + 1
+        if result:
+            await utils.update_database(f'UPDATE seegs SET gex = {new_count} WHERE user = {ctx.author.id}')
+        else:
+            await utils.update_database(f'INSERT INTO seegs (user, gex) VALUES ({ctx.author.id}, {new_count})')
+        await ctx.send(f"**{user.mention} has been gexxed in the ass by <@{ctx.author.id}>!**") 
+
+    @commands.hybrid_command()
+    async def blow(self, ctx, user: Member):
+        
+        print(True)
+        result = await utils.query_database(f'SELECT bodycount FROM seegs WHERE user = {ctx.author.id}')
+        if result:
+                current_count = result[0] if result[0] is not None else 0
+        else:
+                current_count = 0
+        new_count = current_count + 1
+        if result:
+            await utils.update_database(f'UPDATE seegs SET bodycount = {new_count} WHERE user = {ctx.author.id}')
+        else:
+            await utils.update_database(f'INSERT INTO seegs (user, bodycount) VALUES ({ctx.author.id}, {new_count})')
+        await ctx.send(f"**{user.mention} gave <@{ctx.author.id}> a blowjob!**") 
+
+    @commands.hybrid_command()
+    async def footjob(self, ctx, user: Member):
+        
+        print(True)
+        result = await utils.query_database(f'SELECT bodycount FROM seegs WHERE user = {ctx.author.id}')
+        if result:
+                current_count = result[0] if result[0] is not None else 0
+        else:
+                current_count = 0
+        new_count = current_count + 1
+        if result:
+            await utils.update_database(f'UPDATE seegs SET bodycount = {new_count} WHERE user = {ctx.author.id}')
+        else:
+            await utils.update_database(f'INSERT INTO seegs (user, bodycount) VALUES ({ctx.author.id}, {new_count})')
+        await ctx.send(f"**{user.mention} gave <@{ctx.author.id}> a footjob!**") 
+
+    @commands.hybrid_command()
+    async def sexstats(self,ctx):     
         result = await utils.query_database(f'SELECT bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff FROM seegs WHERE user = {ctx.author.id}')
         if result:
             bodycount = result[0]
@@ -168,8 +212,9 @@ class command(commands.Cog):
 
 
     @commands.hybrid_command()
-    async def leaderboard(self,ctx):
+    async def sexleaderboard(self,ctx):
         footer_msg = []
+        author_name = ctx.author.nick if ctx.author.nick else ctx.author.name
         with open("footer_message.txt", "rt") as f:
             footer_msg.clear()
             for line in f:
@@ -184,9 +229,13 @@ class command(commands.Cog):
             rpt += 1
             if rpt > 10:
                 break 
-        embed.set_author(name=ctx.author.nick, icon_url=ctx.author.avatar.url)
+        embed.set_author(name=author_name, icon_url=ctx.author.avatar.url)
         embed.set_footer(text=f"{choice(footer_msg)}")
         await ctx.send(embed=embed)
+
+    @commands.hybrid_command()
+    async def ping(self, ctx):
+         await ctx.send(f'Pong! {round(self.client.latency * 1000)}ms')
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -198,6 +247,8 @@ class command(commands.Cog):
             await ctx.send(f"**{ctx.author.mention}, you need more people!**")
         else:
             await utils.error_report(error, ctx.channel.id)
+
+    
 
 
 async def setup(client):
