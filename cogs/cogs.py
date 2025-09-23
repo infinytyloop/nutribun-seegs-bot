@@ -3,7 +3,7 @@ from discord.ext import commands
 from random import randint, choice
 from discord import Embed, colour, Member
 
- class command(commands.Cog):
+class command(commands.Cog):
     def __init__(self, client):
         self.client = client
 
