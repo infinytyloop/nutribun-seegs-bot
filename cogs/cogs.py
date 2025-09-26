@@ -143,6 +143,10 @@ class command(commands.Cog):
          await ctx.send(f"**Nagjakol si <@{ctx.author.id}>!**")  
 
     @commands.hybrid_command()
+    async def cuddle(self, ctx, user: Member):
+         await ctx.send(f"**<@{ctx.author.id}> cuddled {user.mention} and went to sleep.**") 
+
+    @commands.hybrid_command()
     async def gex(self, ctx, user: Member):
         
         print(True)
