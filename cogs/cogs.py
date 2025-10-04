@@ -163,6 +163,22 @@ class command(commands.Cog):
         await ctx.send(f"**{user.mention} has been gexxed in the ass by <@{ctx.author.id}>!**") 
 
     @commands.hybrid_command()
+    async def peg(self, ctx, user: Member):
+        
+        print(True)
+        result = await utils.query_database(f'SELECT peg FROM seegs WHERE user = {ctx.author.id}')
+        if result:
+                current_count = result[0] if result[0] is not None else 0
+        else:
+                current_count = 0
+        new_count = current_count + 1
+        if result:
+            await utils.update_database(f'UPDATE seegs SET peg = {new_count} WHERE user = {ctx.author.id}')
+        else:
+            await utils.update_database(f'INSERT INTO seegs (user, peg) VALUES ({ctx.author.id}, {new_count})')
+        await ctx.send(f"**{user.mention} got pegged by <@{ctx.author.id}>!**")         
+
+    @commands.hybrid_command()
     async def blow(self, ctx, user: Member):
         
         print(True)
@@ -199,7 +215,7 @@ class command(commands.Cog):
         id = ctx.author.id if user is None else user.id
         name = ctx.author.name if user is None else user.name
         avatar = ctx.author.avatar if user is None else user.avatar     
-        result = await utils.query_database(f'SELECT bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff FROM seegs WHERE user = {id}')
+        result = await utils.query_database(f'SELECT bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff, peg FROM seegs WHERE user = {id}')
         if result:
             bodycount = result[0]
             swordfights = result[1] if result[1] is not None else 0
@@ -212,9 +228,10 @@ class command(commands.Cog):
             miscarriage = result[8] if result[8] is not None else 0
             gex = result[9] if result[9] is not None else 0
             sniff = result[10] if result[10] is not None else 0
+            peg = result[11] if result[11] is not None else 0
         else:
-            bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff = 0,0,0,0,0,0,0,0,0,0,0
-        embed = await utils.construct_statsembed(name, avatar, bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff)
+            bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff, peg = 0,0,0,0,0,0,0,0,0,0,0,0
+        embed = await utils.construct_statsembed(name, avatar, bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff, peg)
         await ctx.send(embed=embed)
 
 

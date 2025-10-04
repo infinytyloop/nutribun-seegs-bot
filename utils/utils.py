@@ -20,7 +20,8 @@ async def init_database():
     unsuccessful smallint(255),
     miscarriage smallint(255),
     gex smallint(255),
-    sniff smallint(255)
+    sniff smallint(255),
+    peg smallint(255)
     )""")
     await db.close()
     print("Database is initialized and ready.")
@@ -80,7 +81,7 @@ async def error_report(e,channel):
         errors = errors + 1
         print("Error occurred, please check DMs")
 
-async def construct_statsembed(author, avatar, bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff):
+async def construct_statsembed(author, avatar, bodycount, swordfights, swordfight_win, swordfight_loss, boys, girls, femboys, unsuccessful, miscarriage, gex, sniff, peg):
     footer_msg = []
     with open("footer_message.txt", "rt") as f:
         footer_msg.clear()
@@ -98,6 +99,7 @@ async def construct_statsembed(author, avatar, bodycount, swordfights, swordfigh
     embed.add_field(name="Swordfight Losses", value=swordfight_loss, inline=True)
     embed.add_field(name="Times Gexxed", value=gex, inline=True)
     embed.add_field(name="PE clothes sniffed", value=sniff,inline=True)
+    embed.add_field(name="People pegged", value=peg,inline=True)
     embed.add_field(name="\n**IMPREGNATE STATS**", value="",inline= False)
     embed.add_field(name="Boys", value=boys, inline=True)
     embed.add_field(name="Girls", value=girls, inline=True)
